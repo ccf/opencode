@@ -20,7 +20,7 @@ import { State } from "./state"
 import { Identifier } from "./util/identifier"
 import { EventV2 } from "./event"
 import { IntegrationConnection } from "./integration/connection"
-import { causeMessage } from "./util/error"
+import { causeMessage, errorMessage } from "./util/error"
 
 export const ID = IntegrationSchema.ID
 export type ID = IntegrationSchema.ID
@@ -165,11 +165,19 @@ export type AttemptStatus = typeof AttemptStatus.Type
 
 export class CodeRequiredError extends Schema.TaggedErrorClass<CodeRequiredError>()("Integration.CodeRequired", {
   attemptID: AttemptID,
-}) {}
+}) {
+  override get message() {
+    return `Authorization code required for OAuth attempt ${this.attemptID}`
+  }
+}
 
 export class AuthorizationError extends Schema.TaggedErrorClass<AuthorizationError>()("Integration.Authorization", {
   cause: Schema.Defect(),
-}) {}
+}) {
+  override get message() {
+    return `Integration authorization failed: ${errorMessage(this.cause)}`
+  }
+}
 
 export type Error = CodeRequiredError | AuthorizationError
 

@@ -2,6 +2,7 @@ import { describe, expect, test } from "bun:test"
 import { NamedError, causeMessage, errorMessage } from "@opencode-ai/core/util/error"
 import { Cause, Schema } from "effect"
 
+// oxlint-disable-next-line opencode/tagged-error-message -- Intentionally message-less to test fallback rendering.
 class StructuredError extends Schema.TaggedErrorClass<StructuredError>()("StructuredError", {
   resource: Schema.String,
 }) {}

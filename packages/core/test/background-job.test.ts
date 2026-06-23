@@ -6,6 +6,7 @@ import { it } from "./lib/effect"
 describe("BackgroundJob", () => {
   it.live("preserves useful text for structured failures without messages", () =>
     Effect.gen(function* () {
+      // oxlint-disable-next-line opencode/tagged-error-message -- Intentionally message-less to test fallback rendering.
       class StructuredError extends Schema.TaggedErrorClass<StructuredError>()("StructuredError", {
         resource: Schema.String,
       }) {}
